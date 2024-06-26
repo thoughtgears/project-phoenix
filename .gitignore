@@ -1,0 +1,12 @@
+# Local ignores
+.venv
+.idea
+.env
+
+# Terraform Ignores
+**/tf.plan
+**/.terraform
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/terraform.tfvars
