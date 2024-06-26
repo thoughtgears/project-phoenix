@@ -1,0 +1,6 @@
+google-cloud-firestore==2.*
+fastapi==0.*
+uvicorn==0.*
+python-dotenv==1.*
+pydantic==2.*
+functions-framework==3.*

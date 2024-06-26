@@ -10,3 +10,5 @@
 **/terraform.tfstate
 **/terraform.tfstate.backup
 **/terraform.tfvars
+**/.terraform.tfstate.lock.info
+resources/pab-policies/**
