@@ -24,3 +24,9 @@ resource "google_project_iam_member" "cloud_scheduler_function_invoker" {
   role    = "roles/cloudfunctions.invoker"
 }
 
+// Grant access for the build to pull the source for cloud function on deploy
+resource "google_project_iam_member" "cloud_function_object_viewer" {
+  project = module.projects["source"].id
+  member  = "serviceAccount:${module.projects["source"].number}-compute@developer.gserviceaccount.com"
+  role    = "roles/storage.objectViewer"
+}

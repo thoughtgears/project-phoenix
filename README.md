@@ -6,6 +6,7 @@
 - [Organization Principal Access Boundary Policy](#organization-principal-access-boundary-policy)
 - [Phoenix](#phoenix)
     - [Directory structure](#directory-structure)
+    - [To run the function](#to-run-the-function)
     - [Prerequisites](#prerequisites)
     - [Posting to the API](#posting-to-the-api)
     - [Extending the API](#extending-the-api)
@@ -92,6 +93,17 @@ This application provides an API to create backups of different data sources in 
 FastAPI and is designed to be easily extendable for other data sources like Cloud SQL in the future. The function listens for HTTP requests, parses the request
 to get the necessary parameters, initiates a Firestore backup job, and waits for the job to complete. It includes detailed logging and error handling to ensure
 that any issues can be quickly identified and addressed.
+
+### To run the function
+
+In order to allow for the function to export the data from Firestore, the service account running the function must have the necessary permissions to export the
+data. The service account must have the `roles/datastore.importExportAdmin` role. This needs to be set in the project where the Firestore database is located.
+
+```shell
+gcloud projects add-iam-policy-binding your-project-id \
+--member=serviceAccount:cf-phoenix@your-project-id.iam.gserviceaccount.com \
+--role=roles/datastore.importExportAdmin
+```
 
 ### Directory structure
 
