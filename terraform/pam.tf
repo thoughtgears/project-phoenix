@@ -1,3 +1,7 @@
+/*
+  This still does not create the PAM, you will need to initialize the PAM manually or
+  setting the required permissions to the service agent.
+ */
 resource "google_privileged_access_manager_entitlement" "dr_restoration" {
   provider             = google-beta
   entitlement_id       = "dr-restoration"
