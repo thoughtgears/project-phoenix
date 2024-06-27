@@ -18,13 +18,22 @@ resource "google_cloud_scheduler_job" "phoenix_backup_scheduler" {
   schedule  = "0 0 * * *" # Run every day at midnight
   time_zone = "Etc/UTC"
 
+  retry_config {
+    retry_count        = 1
+    max_retry_duration = "60s"
+  }
+
   http_target {
     uri         = "https://${var.region}-${module.projects["source"].id}.cloudfunctions.net/phoenix-backup"
     http_method = "POST"
+    headers = {
+      "Content-Type" = "application/json",
+      "User-Agent"   = "Google-Cloud-Scheduler"
+    }
     body = base64encode(jsonencode({
-      type       = "firestore"
-      project_id = data.google_project.data_project.project_id,
-      number     = data.google_project.data_project.number
+      type           = "firestore"
+      project_id     = data.google_project.data_project.project_id,
+      project_number = data.google_project.data_project.number
     }))
 
     oidc_token {

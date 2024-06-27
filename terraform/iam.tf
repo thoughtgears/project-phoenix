@@ -40,8 +40,14 @@ resource "google_service_account" "cloud_scheduler_phoenix_backup" {
 
 resource "google_project_iam_member" "cloud_scheduler_function_invoker" {
   project = module.projects["source"].id
-  member  = "serviceAccount:${google_service_account.phoenix_cloud_function.email}"
+  member  = "serviceAccount:${google_service_account.cloud_scheduler_phoenix_backup.email}"
   role    = "roles/cloudfunctions.invoker"
+}
+
+resource "google_project_iam_member" "cloud_scheduler_token_creator" {
+  project = module.projects["source"].id
+  member  = "serviceAccount:${google_service_account.phoenix_cloud_function.email}"
+  role    = "roles/iam.serviceAccountTokenCreator"
 }
 
 // Grant access for the build to pull the source for cloud function on deploy
