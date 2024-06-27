@@ -1,3 +1,11 @@
+/*
+    This file creates a Cloud Scheduler job that triggers a Cloud Function every day at midnight.
+    The Cloud Function is responsible for backing up Firestore data.
+    The Cloud Scheduler job uses an OIDC token to authenticate the request.
+    The Build service account is granted permissions to deploy the Cloud Function.
+
+    You will need to add the Cloud Functions service account to your project as a roles/datastore.importExportAdmin (Cloud Datastore Import Export Admin)
+ */
 resource "google_service_account" "phoenix_cloud_function" {
   project      = module.projects["source"].id
   account_id   = "cf-phoenix"
@@ -11,10 +19,16 @@ resource "google_project_iam_member" "phoenix_service_agent" {
   role    = "roles/cloudfunctions.serviceAgent"
 }
 
-resource "google_project_iam_member" "cloud_function_artifact_registry_writer" {
+resource "google_storage_bucket_iam_member" "phoenix_bucket_owner" {
+  bucket = module.storage_buckets["source"].name
+  member = "serviceAccount:${google_service_account.phoenix_cloud_function.email}"
+  role   = "roles/storage.legacyBucketOwner"
+}
+
+resource "google_project_iam_member" "cloud_function_artifact_registry_reader" {
   project = module.projects["source"].id
   member  = "serviceAccount:${google_service_account.phoenix_cloud_function.email}"
-  role    = "roles/artifactregistry.writer"
+  role    = "roles/artifactregistry.reader"
 }
 
 resource "google_service_account" "cloud_scheduler_phoenix_backup" {

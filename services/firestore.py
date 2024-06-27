@@ -19,23 +19,26 @@ class Firestore:
         self._bucket_name = bucket_name
         self._client = firestore_admin_v1.FirestoreAdminClient()
 
-    def backup(self, project_id: str, database: str = None, collections: List[str] = None):
+    def backup(self, project_id: str, data: dict = None) -> None:
         """
         Initiate a Firestore backup.
 
         Args:
             project_id (str): Google Cloud project ID.
-            database (str, optional): Firestore database ID. Defaults to "(default)".
-            collections (List[str], optional): List of collections to back up. Defaults to all collections.
+            data (dict, optional): Data for the Firestore backup. Defaults to None.
 
         Raises:
             Exception: If the backup operation fails.
         """
-        timestamp = datetime.now().strftime("%Y%m%d")
-        bucket = f"gs://{self._bucket_name}/firestore/{project_id}/{database}/{timestamp}"
+        database = "(default)"
+        collections = []
 
-        if not database:
-            database = "(default)"
+        if data:
+            database = data.get("database", "(default)")  # Provide a default if "database" is not present
+            collections = data.get("collections", [])  # Provide a default if "collections" is not present
+
+        timestamp = datetime.now().strftime("%Y%m%d%H%M")
+        bucket = f"gs://{self._bucket_name}/firestore/{project_id}/{database}/{timestamp}"
 
         request = firestore_admin_v1.ExportDocumentsRequest(
             name=f"projects/{project_id}/databases/{database}",

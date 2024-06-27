@@ -27,6 +27,10 @@ access management entitlements for the target project.
 
 <img src="resources/images/firestore-export.jpg" alt="Firestore Export">
 
+### Datatransfer Process
+
+<img src="resources/images/copy-y-z-final.jpg" alt="Data Transfer">
+
 ## Organization Principal Access Boundary Policy
 
 We will enable the Principal Access Boundary (PAB) Policy for the organization. This policy will restrict the access to the DR project to only one google group.
@@ -140,6 +144,8 @@ The postbody must contain certain parameters to initiate a backup job. The param
   "type": "firestore",
   // Requred
   "project_id": "your-google-cloud-project-id",
+  // Required
+  "project_number": "your-google-cloud-project-number",
   // Optional based on type, this is the data for the firestore backup
   // If no collections are provided, all collections will be backed up
   // If no database is provided, the default database will be used

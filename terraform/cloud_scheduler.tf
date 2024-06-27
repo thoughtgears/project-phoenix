@@ -1,3 +1,16 @@
+/*
+  We get the data project to ensure we can have the right permissions to access the Firestore database.
+  Since we will need the number and the project_id, we will use the data source to get the information.
+ */
+data "google_project" "data_project" {
+  project_id = var.data_project
+}
+
+/*
+  This will create the Cloud scheduler job that will run the backup function every day at midnight.
+  It will use the OIDC token to authenticate the request.
+  The body can contain data = {"database": "my-db", "collections": ["users", "posts"]}, defaults to [] and (database) if not provided.
+ */
 resource "google_cloud_scheduler_job" "phoenix_backup_scheduler" {
   project   = module.projects["source"].id
   name      = "phoenix-backup-scheduler"
@@ -10,10 +23,8 @@ resource "google_cloud_scheduler_job" "phoenix_backup_scheduler" {
     http_method = "POST"
     body = base64encode(jsonencode({
       type       = "firestore"
-      project_id = var.data_project,
-      data = {
-        collections = []
-      }
+      project_id = data.google_project.data_project.project_id,
+      number     = data.google_project.data_project.number
     }))
 
     oidc_token {

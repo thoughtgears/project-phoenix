@@ -58,7 +58,7 @@ deploy:
 	--entry-point backup \
 	--service-account $(SERVICE_ACCOUNT) \
 	--set-env-vars BUCKET_NAME=$(BUCKET_NAME) \
-	--memory 128MB \
+	--memory 256MB \
 	--timeout 60s \
 	--region $(REGION) \
 	--project $(PROJECT_ID) \

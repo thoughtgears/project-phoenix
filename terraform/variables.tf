@@ -29,3 +29,17 @@ variable "data_project" {
   description = "The project ID where the data is located"
   default     = ""
 }
+
+variable "backup_admin_group" {
+  type        = string
+  description = "The group to grant permissions for DR restore"
+}
+
+variable "backup_approve_group" {
+  type        = string
+  description = "The group to grant permissions for DR restore"
+}
+
+variable "backup_approve_users" {
+  type = list(string)
+}

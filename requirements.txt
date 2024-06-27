@@ -4,3 +4,5 @@ uvicorn==0.*
 python-dotenv==1.*
 pydantic==2.*
 functions-framework==3.*
+google-cloud-storage==2.*
+google-cloud-iam==2.*
