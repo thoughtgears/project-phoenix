@@ -35,7 +35,7 @@ pab:
 			--display-name=$(PAB_POLICY_ID) \
 			--condition-title="dr-group" \
 			--condition-description="Only allow access to the project if in dr group" \
-			--condition-expression="principal.type == 'iam.googleapis.com/WorkspaceIdentity' && 'principal.subject.startsWith(\"gcp-backup-admins\")'"; \
+			--condition-expression="principal.type == 'iam.googleapis.com/WorkspaceIdentity' && principal.subject == '$(BACKUP_GROUP)'"; \
 	fi
 
 terraform:
